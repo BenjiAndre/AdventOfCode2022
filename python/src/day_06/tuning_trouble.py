@@ -12,12 +12,6 @@ def main():
 
 
 def process_stream(data: str, distinct_chars: int) -> tuple:
-    """ Process a str of data
-    Report char position when the last distinct_chars chars are all different
-
-    Returns: tuple: (stream, position)
-    """
-
     stream = [char for char in data[:distinct_chars]]
 
     for i, char in enumerate(data[distinct_chars:], start=distinct_chars):

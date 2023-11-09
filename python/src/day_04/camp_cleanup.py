@@ -16,24 +16,19 @@ def main():
 
         assignment_pairs.append(assigments)
 
-    includes_count = sum(1 for tasks_1, tasks_2 in assignment_pairs
-                if tasks_1 == tasks_2 or
-                tasks_1 < tasks_2 or # tasks_1 subset of tasks_2
-                tasks_2 < tasks_1) # tasks_2 subset of tasks_1
+    includes_count = sum(
+            1 for tasks_1, tasks_2 in assignment_pairs
+            if tasks_1 == tasks_2 or tasks_1 < tasks_2 or tasks_2 < tasks_1
+    )
 
     print(f"Part 1: Number of assignment inclusions = {includes_count}")
 
-    overlap_count = sum(1 for tasks_1, tasks_2 in assignment_pairs
-                        if tasks_1 & tasks_2)
+    overlap_count = sum(
+            1 for tasks_1, tasks_2 in assignment_pairs
+            if tasks_1 & tasks_2
+    )
 
     print(f"Part 2: Numnber of assignment overlaps = {overlap_count}")
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     t1 = time.perf_counter()

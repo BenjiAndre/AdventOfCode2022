@@ -10,7 +10,6 @@ def main():
         elf_calories.append(calories)
 
     print(f"Part 1: {max(elf_calories)}")
-
     elf_calories = sorted(elf_calories)
     print(f"Part 2: {sum(elf_calories[-3:])}")
 
