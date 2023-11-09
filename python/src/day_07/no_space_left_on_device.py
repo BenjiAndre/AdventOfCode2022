@@ -11,50 +11,33 @@ class Directory:
     """Represents a file system directory. Has a parent directory,
     subdirectories or/and files.
     """
-    def __init__(self, name: str) -> None:
-        self._name = name
-        self._files: list[File] = []
-        self._dirs: list[Directory] = []
+    def __init__(self, name: str, parent_dir=None):
+        self.name = name
+        self.parent_dir = parent_dir
+        self.files = []
+        self.directories = []
 
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def parent_dir(self):
-        return self._parent_dir
-
-    @parent_dir.setter
-    def parent_dir(self, value):
-        self._parent_dir = value
-
-    @property
-    def directories(self):
-        return self._dirs
-
-    def get_directory(self, name: str) -> Directory:
+    def get_directory(self, name: str) -> 'Directory':
         return next(dir for dir in self.directories if dir.name == name)
 
-    def get_all_dirs(self) -> list[Directory]:
-        all_dirs = []
-        for directory in self.directories:
-            all_dirs.extend(directory.get_all_dirs())
-
-        all_dirs.extend(self.directories)
-
-        return all_dirs
+    def get_all_dirs(self) -> list['Directory']:
+        return [ 
+            directory for subdir in self.directories
+            for directory in (subdir.get_all_dirs() + [subdir])
+        ]
 
     @property
     def size(self):
-        return sum(file.size for file in self._files) + sum(directory.size for directory in self._dirs)
+        return sum(file.size for file in self.files) + sum(
+                directory.size for directory in self.directories
+            )
 
-    def add_file(self, file: File):
-        self._files.append(file)
+    def add_file(self, file):
+        self.files.append(file)
 
-    def add_directory(self, directory: Directory):
-        self._dirs.append(directory)
-        directory._parent_dir = self
-
+    def add_directory(self, directory: 'Directory'):
+        self.directories.append(directory)
+        directory.parent_dir = self
 
 def main():
     with open("input/input.txt", "r") as f:
