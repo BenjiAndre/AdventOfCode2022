@@ -32,8 +32,10 @@ class Cave():
     VECTORS = [Coord(0,1), Coord(-1,1), Coord(1, 1)]
 
     def __init__(self, rocks):
-        self.rocks = rocks
-        self.sand = set()
+        self.occupied = [[False] * 1000 for _ in range(1000)]
+        for rock in rocks :
+            self.occupied[rock.x][rock.y] = True
+
         self.max_y = max(rock.y for rock in rocks)
         self.floor = self.max_y + 2
 
@@ -49,7 +51,7 @@ class Cave():
                 return False
             for v in self.VECTORS:
                 candidate = Coord(s.x + v.x, s.y + v.y)
-                if candidate not in self.sand and candidate not in self.rocks:
+                if not self.occupied[candidate.x][candidate.y]:
                     if floor and candidate.y == self.floor:
                         falling = False
                         break
@@ -58,7 +60,7 @@ class Cave():
             else:
                 falling = False
 
-        self.sand.add(s)
+        self.occupied[s.x][s.y] = True
         return True
 
 
@@ -72,7 +74,7 @@ def main():
     while(cave.drop_sand()):
         units += 1
     print(f"Part 1: Number of units of sand at rest : {units}")
-    while(Coord(500, 0) not in cave.sand):
+    while(cave.occupied[500][0] == False):
         cave.drop_sand(True)
         units += 1
     print(f"Part 2: Number of units of sand at rest before reaching source : {units}")
