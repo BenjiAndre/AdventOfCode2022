@@ -15,18 +15,10 @@ def solve(Co, Cc, Co1, Co2, Cg1, Cg2, T):
         if t==0:
             continue
         
-        # When we have enough material-robots to produce enough ore to make another robot each minute,
-        # We do not need to make more ore, so we cap these values
+        # We get the maximum amount of ore we could possibly spend during any turn
         Core = max([Co, Cc, Co1, Cg1])
-        if r1 >= Core:
-            r1 = Core
-        if r2 >= Co2:
-            r2 = Co2
-        if r3 >= Cg2:
-            r3 = Cg2
 
-        # If we have more than enough material, we cap these values because it doesn't change anything
-        # And this way we can do set comparison to find the best value
+        # If we have more material than we would need, we cap the value to help set recognition
         if o >= t * Core - r1 * (t-1):
             o = t * Core - r1 * (t-1)
         if c >= t * Co2 - r2 * (t-1):
@@ -39,12 +31,14 @@ def solve(Co, Cc, Co1, Co2, Cg1, Cg2, T):
             continue
         SEEN.add(state)
 
+        # We then try doing nothing or making a robot if we have enough material
+        # And we don't have too many robots
         Q.append((o+r1,c+r2,ob+r3,g+r4,r1,r2,r3,r4,t-1))
-        if o>=Co: # buy ore
+        if o>=Co and r1<Core:
             Q.append((o-Co+r1, c+r2, ob+r3, g+r4, r1+1,r2,r3,r4,t-1))
-        if o>=Cc:
+        if o>=Cc and r2<Co2:
             Q.append((o-Cc+r1, c+r2, ob+r3, g+r4, r1,r2+1,r3,r4,t-1))
-        if o>=Co1 and c>=Co2:
+        if o>=Co1 and c>=Co2 and r3<Cg2:
             Q.append((o-Co1+r1, c-Co2+r2, ob+r3, g+r4, r1,r2,r3+1,r4,t-1))
         if o>=Cg1 and ob>=Cg2:
             Q.append((o-Cg1+r1, c+r2, ob-Cg2+r3, g+r4, r1,r2,r3,r4+1,t-1))
