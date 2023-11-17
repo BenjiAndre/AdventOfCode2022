@@ -16,7 +16,7 @@ def run_day(day, is_test=False):
     print(f"Execution time: {t2-t1:0.4f} seconds")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) > 3:
         print("Usage: python main.py <day>")
         sys.exit(1)
 

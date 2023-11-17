@@ -43,6 +43,7 @@ def main(input_dir):
     # h = distance from floor, w = distance from left wall
     # i = which rock needs to fall, t = which direction should the rock go
     while i < 1000000000000:
+        print(i)
         rock = ROCKS[i % 5]
         h = get_height(cave) + 3
         w = 2
