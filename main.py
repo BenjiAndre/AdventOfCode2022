@@ -6,8 +6,8 @@ def run_day(day, is_test=False):
     day_str = str(day).zfill(2)  # Ensure two-digit format with leading zeros
     input_dir = "test_inputs" if is_test else "inputs"
     
-    module_name = f"scripts.{day_str}"
-    spec = importlib.util.spec_from_file_location(module_name, f"scripts/{day_str}.py")
+    module_name = f"src.{day_str}"
+    spec = importlib.util.spec_from_file_location(module_name, f"src/{day_str}.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     t1 = time.perf_counter()
