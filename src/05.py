@@ -1,6 +1,5 @@
 import re
 import os
-from copy import deepcopy
 
 STACKS = [
             ['B', 'V', 'S', 'N', 'T', 'C', 'H', 'Q'],
@@ -20,25 +19,24 @@ def main(input_dir):
     with open(input_file_path, 'r') as f:
         stack_data, instruction_data = f.read().split("\n\n")
 
-    stacks1 = process_stack_data(stack_data.splitlines())
-    stacks2 = deepcopy(stacks1)
+    stacks = process_stack_data(stack_data.splitlines())
     moves = process_instruction_data(instruction_data.splitlines())
 
     # Part 1
     for count, src, dest in moves:
         for _ in range(count):
-            stacks1[dest].append(stacks1[src].pop())
+            stacks[dest].append(stacks[src].pop())
 
-    result = "".join(stack[-1] for stack in stacks1)
+    result = "".join(stack[-1] for stack in stacks)
     print(f"Part 1: {result}")
 
     # Part 2
     for count, src, dest in moves:
         # Slice the items off the source stack and then move them to the dest stack
-        stacks2[dest].extend(stacks2[src][-count:])
-        stacks2[src][-count:] = [] # Delete the moved items
+        STACKS[dest].extend(STACKS[src][-count:])
+        STACKS[src][-count:] = [] # Delete the moved items
 
-    result = "".join(stack[-1] for stack in stacks2)
+    result = "".join(stack[-1] for stack in STACKS)
     print(f"Part 2: {result}")
 
 
